@@ -1,10 +1,19 @@
 import "./App.css";
+import { useState } from "react";
+import MainBoard from "./pages/MainBoard/MainBoard";
+import AnimatedBackground from "./components/AnimatedBackground/AnimatedBackground";
+import ChatBox from "./components/ChatBox/ChatBox";
 
 function App() {
+  const [showChat, setShowChat] = useState(true);
+
   return (
-    <div className="App">
-      <h1>Doable</h1>
-    </div>
+    <AnimatedBackground>
+      <div className="App">
+        <MainBoard />
+        <ChatBox />
+      </div>
+    </AnimatedBackground>
   );
 }
 

@@ -1,0 +1,532 @@
+.animated-background {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  animation: skyCycle 24s ease-in-out infinite;
+  background-color: var(--sky-color-1);
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 60%
+  );
+  font-family: system-ui, -apple-system, sans-serif;
+  color-scheme: light dark;
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Theme Variables */
+:root {
+  --sky-color-1: hsl(15 60% 25%);
+  --sky-color-2: hsl(39 70% 36%);
+  --sky-color-3: hsl(200 60% 36%);
+  --sky-color-4: hsl(39 70% 38%);
+  --sky-color-5: hsl(15 60% 28%);
+  --sky-color-6: hsl(220 40% 10%);
+  --wave-color-1: hsla(15, 60%, 15%, 0.5);
+  --wave-color-2: hsla(39, 60%, 28%, 0.4);
+  --wave-color-3: hsla(200, 50%, 23%, 0.35);
+  --wave-color-4: hsla(39, 60%, 23%, 0.3);
+  --wave-color-5: hsla(15, 60%, 15%, 0.5);
+  --wave-color-6: hsla(220, 40%, 21%, 0.4);
+  --footer-bg: color-mix(in srgb, var(--sky-color-6), transparent 40%);
+  --footer-text: hsl(39 80% 70%);
+  --footer-text-hover: hsl(39 100% 80%);
+}
+
+/* Sun */
+.sun {
+  position: absolute;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(210, 180, 140, 0.32) 0%,
+    rgba(210, 180, 140, 0.16) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: sunPath 24s linear infinite;
+  z-index: 1;
+  filter: brightness(0.6);
+}
+
+/* Stars */
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 0.1%),
+    radial-gradient(circle at 25% 15%, rgba(255, 255, 255, 0.4) 0%, transparent 0.08%),
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.5) 0%, transparent 0.09%),
+    radial-gradient(circle at 45% 18%, rgba(255, 255, 255, 0.7) 0%, transparent 0.12%),
+    radial-gradient(circle at 55% 22%, rgba(255, 255, 255, 0.4) 0%, transparent 0.08%),
+    radial-gradient(circle at 65% 16%, rgba(255, 255, 255, 0.5) 0%, transparent 0.1%),
+    radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 0.11%),
+    radial-gradient(circle at 85% 24%, rgba(255, 255, 255, 0.4) 0%, transparent 0.08%),
+    radial-gradient(circle at 20% 35%, rgba(255, 255, 255, 0.5) 0%, transparent 0.09%),
+    radial-gradient(circle at 40% 32%, rgba(255, 255, 255, 0.3) 0%, transparent 0.07%),
+    radial-gradient(circle at 60% 38%, rgba(255, 255, 255, 0.6) 0%, transparent 0.1%),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 0.08%),
+    radial-gradient(circle at 10% 28%, rgba(255, 255, 255, 0.5) 0%, transparent 0.09%),
+    radial-gradient(circle at 90% 26%, rgba(255, 255, 255, 0.6) 0%, transparent 0.11%);
+  animation: starsAppear 24s ease-in-out infinite;
+  z-index: 0;
+}
+
+/* Horizon Glow */
+.horizon-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(150, 80, 60, 0.3) 0%,
+    rgba(150, 130, 90, 0.15) 20%,
+    transparent 50%
+  );
+  animation: horizonGlow 24s ease-in-out infinite;
+  z-index: -2;
+}
+
+/* Wave Container */
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.wave-group {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 56.25rem;
+  transform: scaleY(0.65);
+  transform-origin: bottom;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.wave-1 {
+  --ty: 0;
+  background: var(--wave-color-1);
+  opacity: 0.2;
+  animation: waveMove 7s ease-in-out infinite;
+  clip-path: polygon(
+    0 70%, 20% 60%, 40% 70%, 60% 60%, 80% 70%, 100% 60%, 100% 100%, 0 100%
+  );
+}
+
+.wave-2 {
+  --ty: 2.5%;
+  background: var(--wave-color-2);
+  opacity: 0.15;
+  animation: waveMove 9s ease-in-out infinite -2.25s;
+  width: 300%;
+  clip-path: polygon(
+    0 75%, 16.67% 70%, 33.33% 75%, 50% 70%, 66.67% 75%, 83.33% 70%, 100% 75%, 100% 100%, 0 100%
+  );
+}
+
+.wave-3 {
+  --ty: 5%;
+  background: var(--wave-color-3);
+  opacity: 0.12;
+  animation: waveMove 9s ease-in-out infinite -4.5s;
+  clip-path: polygon(
+    0 83.33%, 25% 80%, 50% 83.33%, 75% 80%, 100% 83.33%, 100% 100%, 0 100%
+  );
+}
+
+.wave-4 {
+  --ty: 7.5%;
+  background: var(--wave-color-4);
+  opacity: 0.1;
+  animation: waveMove 7s ease-in-out infinite -3.5s;
+  width: 300%;
+  clip-path: polygon(
+    0 58.33%, 16.67% 55%, 33.33% 58.33%, 50% 55%, 66.67% 58.33%, 83.33% 55%, 100% 58.33%, 100% 100%, 0 100%
+  );
+}
+
+.interference {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 400%;
+  height: 100%;
+  opacity: 0.12;
+  transform-origin: center bottom;
+  will-change: transform;
+  display: none; /* Disabled by default for performance */
+}
+
+/* Animations */
+@keyframes skyCycle {
+  0% { background-color: var(--sky-color-1); }
+  16.6% { background-color: var(--sky-color-2); }
+  33.3% { background-color: var(--sky-color-3); }
+  50% { background-color: var(--sky-color-4); }
+  66.6% { background-color: var(--sky-color-5); }
+  83.3% { background-color: var(--sky-color-6); }
+  100% { background-color: var(--sky-color-1); }
+}
+
+@keyframes sunPath {
+  0% {
+    left: -20%;
+    top: 70%;
+    opacity: 0;
+    transform: scale(1.5);
+    filter: blur(1.5rem) brightness(1.2);
+  }
+  3% {
+    left: -8%;
+    top: 65%;
+    opacity: 0.1;
+    transform: scale(1.4);
+    filter: blur(1.4rem) brightness(1.15);
+  }
+  6% {
+    left: 0%;
+    top: 58%;
+    opacity: 0.3;
+    transform: scale(1.3);
+    filter: blur(1.3rem) brightness(1.1);
+  }
+  10% {
+    left: 10%;
+    top: 48%;
+    opacity: 0.5;
+    transform: scale(1.2);
+    filter: blur(1.2rem) brightness(1.05);
+  }
+  14% {
+    left: 18%;
+    top: 38%;
+    opacity: 0.65;
+    transform: scale(1.1);
+    filter: blur(1.1rem) brightness(1);
+  }
+  18% {
+    left: 26%;
+    top: 30%;
+    opacity: 0.8;
+    transform: scale(1.05);
+    filter: blur(1.05rem) brightness(1);
+  }
+  22% {
+    left: 34%;
+    top: 24%;
+    opacity: 0.9;
+    transform: scale(1);
+    filter: blur(1rem) brightness(1);
+  }
+  27% {
+    left: 42%;
+    top: 20%;
+    opacity: 0.95;
+    transform: scale(1);
+    filter: blur(1rem) brightness(1);
+  }
+  33.3% {
+    left: 50%;
+    top: 18%;
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(1rem) brightness(1.1);
+  }
+  39% {
+    left: 58%;
+    top: 20%;
+    opacity: 0.95;
+    transform: scale(1);
+    filter: blur(1rem) brightness(1);
+  }
+  44% {
+    left: 66%;
+    top: 24%;
+    opacity: 0.9;
+    transform: scale(1);
+    filter: blur(1rem) brightness(1);
+  }
+  49% {
+    left: 74%;
+    top: 30%;
+    opacity: 0.8;
+    transform: scale(1.05);
+    filter: blur(1.05rem) brightness(1);
+  }
+  54% {
+    left: 82%;
+    top: 38%;
+    opacity: 0.65;
+    transform: scale(1.1);
+    filter: blur(1.1rem) brightness(1);
+  }
+  58% {
+    left: 90%;
+    top: 48%;
+    opacity: 0.5;
+    transform: scale(1.2);
+    filter: blur(1.2rem) brightness(1.05);
+  }
+  62% {
+    left: 100%;
+    top: 58%;
+    opacity: 0.3;
+    transform: scale(1.3);
+    filter: blur(1.3rem) brightness(1.1);
+  }
+  65% {
+    left: 108%;
+    top: 65%;
+    opacity: 0.1;
+    transform: scale(1.4);
+    filter: blur(1.4rem) brightness(1.15);
+  }
+  100% {
+    left: 120%;
+    top: 70%;
+    opacity: 0;
+    transform: scale(1.5);
+    filter: blur(1.5rem) brightness(1.2);
+  }
+}
+
+@keyframes starsAppear {
+  0%, 50% { opacity: 0; }
+  65% { opacity: 0.8; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes horizonGlow {
+  0% { opacity: 0.8; }
+  10% { opacity: 1; }
+  16.6% { opacity: 0.6; }
+  25%, 50% { opacity: 0; }
+  58% { opacity: 0.6; }
+  66.6% { opacity: 1; }
+  75% { opacity: 0.5; }
+  83.3%, 100% { opacity: 0; }
+}
+
+@keyframes waveMove {
+  0%, 100% { transform: translate3d(0, var(--ty), 0); }
+  50% { transform: translate3d(-50%, var(--ty), 0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wave-group {
+    transform: scaleY(0.5);
+  }
+  
+  .sun {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+/* Enable advanced features for supporting browsers */
+@supports (clip-path: shape(from 0% 0%, line to 100% 0%)) {
+  .wave-1 {
+    clip-path: shape(
+      from 0% 66.67%,
+      curve to 75% 66.67% with 25% 50% / 50% 83.33%,
+      curve to 150% 66.67% with 100% 50% / 125% 83.33%,
+      line to 150% 100%,
+      line to 0% 100%,
+      close
+    );
+  }
+  
+  .wave-2 {
+    clip-path: shape(
+      from 0% 75%,
+      curve to 50% 75% with 16.67% 58.33% / 33.33% 91.67%,
+      curve to 100% 75% with 66.67% 58.33% / 83.33% 91.67%,
+      curve to 150% 75% with 116.67% 58.33% / 133.33% 91.67%,
+      line to 150% 100%,
+      line to 0% 100%,
+      close
+    );
+  }
+  
+  .wave-3 {
+    clip-path: shape(
+      from 0% 83.33%,
+      curve to 75% 83.33% with 25% 66.67% / 50% 100%,
+      curve to 150% 83.33% with 100% 66.67% / 125% 100%,
+      line to 150% 100%,
+      line to 0% 100%,
+      close
+    );
+  }
+  
+  .wave-4 {
+    clip-path: shape(
+      from 0% 58.33%,
+      curve to 50% 58.33% with 16.67% 41.67% / 33.33% 75%,
+      curve to 100% 58.33% with 66.67% 41.67% / 83.33% 75%,
+      curve to 150% 58.33% with 116.67% 41.67% / 133.33% 75%,
+      line to 150% 100%,
+      line to 0% 100%,
+      close
+    );
+  }
+  
+  .interference {
+    display: block;
+  }
+  
+  .interference-1 {
+    background: var(--wave-color-1);
+    opacity: 0.2;
+    clip-path: shape(
+      from 0% 71%,
+      curve to 16.67% 70% with 5.56% 71% / 11.11% 69.5%,
+      curve to 33.33% 71% with 22.22% 69.5% / 27.78% 71%,
+      curve to 50% 70% with 38.89% 71% / 44.44% 69.5%,
+      curve to 66.67% 71% with 55.56% 69.5% / 61.11% 71%,
+      curve to 83.33% 70% with 72.22% 71% / 77.78% 69.5%,
+      curve to 100% 71% with 88.89% 69.5% / 94.44% 71%,
+      curve to 116.67% 70% with 105.56% 71% / 111.11% 69.5%,
+      curve to 133.33% 71% with 122.22% 69.5% / 127.78% 71%,
+      curve to 150% 70% with 138.89% 71% / 144.44% 69.5%,
+      curve to 166.67% 71% with 155.56% 69.5% / 161.11% 71%,
+      curve to 183.33% 70% with 172.22% 71% / 177.78% 69.5%,
+      curve to 200% 71% with 188.89% 69.5% / 194.44% 71%,
+      line to 200% 100%,
+      line to 0% 100%,
+      close
+    );
+    animation: interferenceMove1 10s ease-in-out infinite,
+               interferencePulse1 7s ease-in-out infinite;
+  }
+  
+  .interference-2 {
+    background: var(--wave-color-1);
+    opacity: 0.3;
+    clip-path: shape(
+      from 0% 76%,
+      curve to 12.5% 77% with 4.17% 75.5% / 8.33% 77.5%,
+      curve to 25% 76% with 16.67% 77.5% / 20.83% 75.5%,
+      curve to 37.5% 77% with 29.17% 75.5% / 33.33% 77.5%,
+      curve to 50% 76% with 41.67% 77.5% / 45.83% 75.5%,
+      curve to 62.5% 77% with 54.17% 75.5% / 58.33% 77.5%,
+      curve to 75% 76% with 66.67% 77.5% / 70.83% 75.5%,
+      curve to 87.5% 77% with 79.17% 75.5% / 83.33% 77.5%,
+      curve to 100% 76% with 91.67% 77.5% / 95.83% 75.5%,
+      curve to 112.5% 77% with 104.17% 75.5% / 108.33% 77.5%,
+      curve to 125% 76% with 116.67% 77.5% / 120.83% 75.5%,
+      curve to 137.5% 77% with 129.17% 75.5% / 133.33% 77.5%,
+      curve to 150% 76% with 141.67% 77.5% / 145.83% 75.5%,
+      curve to 162.5% 77% with 154.17% 75.5% / 158.33% 77.5%,
+      curve to 175% 76% with 166.67% 77.5% / 170.83% 75.5%,
+      curve to 187.5% 77% with 179.17% 75.5% / 183.33% 77.5%,
+      curve to 200% 76% with 191.67% 77.5% / 195.83% 75.5%,
+      line to 200% 100%,
+      line to 0% 100%,
+      close
+    );
+    animation: interferenceMove2Reverse 15s ease-in-out infinite,
+               interferencePulse2 9s ease-in-out infinite;
+  }
+  
+  .interference-3 {
+    background: var(--wave-color-1);
+    opacity: 0.5;
+    clip-path: shape(
+      from 0% 81%,
+      curve to 10% 80.5% with 3.33% 81.25% / 6.67% 80.25%,
+      curve to 20% 81% with 13.33% 80.25% / 16.67% 81.25%,
+      curve to 30% 80.5% with 23.33% 81.25% / 26.67% 80.25%,
+      curve to 40% 81% with 33.33% 80.25% / 36.67% 81.25%,
+      curve to 50% 80.5% with 43.33% 81.25% / 46.67% 80.25%,
+      curve to 60% 81% with 53.33% 80.25% / 56.67% 81.25%,
+      curve to 70% 80.5% with 63.33% 81.25% / 66.67% 80.25%,
+      curve to 80% 81% with 73.33% 80.25% / 76.67% 81.25%,
+      curve to 90% 80.5% with 83.33% 81.25% / 86.67% 80.25%,
+      curve to 100% 81% with 93.33% 80.25% / 96.67% 81.25%,
+      curve to 110% 80.5% with 103.33% 81.25% / 106.67% 80.25%,
+      curve to 120% 81% with 113.33% 80.25% / 116.67% 81.25%,
+      curve to 130% 80.5% with 123.33% 81.25% / 126.67% 80.25%,
+      curve to 140% 81% with 133.33% 80.25% / 136.67% 81.25%,
+      curve to 150% 80.5% with 143.33% 81.25% / 146.67% 80.25%,
+      curve to 160% 81% with 153.33% 80.25% / 156.67% 81.25%,
+      curve to 170% 80.5% with 163.33% 81.25% / 166.67% 80.25%,
+      curve to 180% 81% with 173.33% 80.25% / 176.67% 81.25%,
+      curve to 190% 80.5% with 183.33% 81.25% / 186.67% 80.25%,
+      curve to 200% 81% with 193.33% 80.25% / 196.67% 81.25%,
+      line to 200% 100%,
+      line to 0% 100%,
+      close
+    );
+    animation: interferenceMove3 19s ease-in-out infinite,
+               interferencePulse3 11s ease-in-out infinite;
+  }
+}
+
+/* Interference animations */
+@keyframes interferenceMove1 {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-12.5%, -0.5%, 0); }
+  100% { transform: translate3d(-25%, 0, 0); }
+}
+
+@keyframes interferenceMove2 {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-12.5%, 0.3%, 0); }
+  100% { transform: translate3d(-25%, 0, 0); }
+}
+
+@keyframes interferenceMove3 {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-12.5%, -0.4%, 0); }
+  100% { transform: translate3d(-25%, 0, 0); }
+}
+
+@keyframes interferencePulse1 {
+  0%, 100% { opacity: 0.06; }
+  50% { opacity: 0.1; }
+}
+
+@keyframes interferencePulse2 {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.08; }
+}
+
+@keyframes interferencePulse3 {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.07; }
+}
